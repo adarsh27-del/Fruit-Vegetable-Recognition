@@ -22,17 +22,19 @@ IMG_SIZE = (180, 180)
 def predict(image):
     image = image.convert("RGB")
     image = image.resize((180, 180))
-    image = np.array(image, dtype=np.float32)
+
+    image = np.array(image, dtype=np.float32) / 255.0
 
     image = np.expand_dims(image, axis=0)
 
     prediction = model.predict(image, verbose=0)
+
     index = np.argmax(prediction)
+    confidence = float(np.max(prediction))
 
     return {
-        class_names[index]: float(np.max(prediction))
+        class_names[index]: confidence
     }
-
 demo = gr.Interface(
     fn=predict,
     inputs=gr.Image(type="pil"),
