@@ -17,14 +17,16 @@ class_names = [
     "Turnip","Watermelon"
 ]
 
-IMG_SIZE = (64, 64)
+IMG_SIZE = (180, 180)
 
 def predict(image):
-    image = image.resize(IMG_SIZE)
-    image = np.array(image) / 255.0
+    image = image.convert("RGB")
+    image = image.resize((180, 180))
+    image = np.array(image, dtype=np.float32)
+
     image = np.expand_dims(image, axis=0)
 
-    prediction = model.predict(image)
+    prediction = model.predict(image, verbose=0)
     index = np.argmax(prediction)
 
     return {
